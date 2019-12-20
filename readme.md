@@ -1,5 +1,5 @@
 # suicchi  
-[![codecov](https://codecov.io/gh/yakovmeister/suicchi/branch/2.0/graph/badge.svg)](https://codecov.io/gh/yakovmeister/suicchi)
+[![codecov](https://codecov.io/gh/yakovmeister/suicchi/branch/2.0/graph/badge.svg)](https://codecov.io/gh/yakovmeister/suicchi) [![Greenkeeper badge](https://badges.greenkeeper.io/yakovmeister/suicchi.svg)](https://greenkeeper.io/)
 [![Build Status][travis-image]][travis-url]
 [![NPM Version][npm-image]][npm-url]
 [![Downloads Stats][npm-downloads]][npm-url]
