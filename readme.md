@@ -28,7 +28,7 @@ switchCase.addCase("car", "Ford GT");
 switchCase.addCase("name", "Rye");
 switchCase.addCase("gender", "female");
 
-const name = switchCase.assert("name");
+const name = switchCase.evaluate("name");
 
 console.log(name); // will return "Rye"
 
@@ -66,7 +66,7 @@ switchCase.addCase("car", "Ford GT");
 switchCase.addCase("name", "Rye");
 switchCase.addCase("gender", "female");
 
-const age = switchCase.assert("age");
+const age = switchCase.evaluate("age");
 
 console.log(age); // will return "no-record"
 
@@ -101,7 +101,7 @@ switchCase.addCase(["car", "transportation"], "Ford GT");
 switchCase.addCase("name", "Rye");
 switchCase.addCase("gender", "female");
 
-const car = switchCase.assert("car");
+const car = switchCase.evaluate("car");
 
 console.log(car); // will return "Ford GT"
 

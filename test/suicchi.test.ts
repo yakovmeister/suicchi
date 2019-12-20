@@ -16,7 +16,7 @@ describe("suicchi", () => {
     switchCase.addCase("two", "return two");
     switchCase.addCase("three", "return three");
 
-    expect(switchCase.assert("two")).to.be.equal("return two");
+    expect(switchCase.evaluate("two")).to.be.equal("return two");
   });
 
   it("should return list of the added switch case", async () => {
@@ -36,7 +36,7 @@ describe("suicchi", () => {
     switchCase.addCase("two", "return two");
     switchCase.addCase("three", "return three");
 
-    expect(switchCase.assert("five")()).to.be.equal(undefined);
+    expect(switchCase.evaluate("five")()).to.be.equal(undefined);
   });
 
   it("should allow cases to have different keys", async () => {
@@ -46,9 +46,9 @@ describe("suicchi", () => {
     switchCase.addCase("two", "return two");
     switchCase.addCase("three", "return three");
 
-    expect(switchCase.assert("1")).to.be.equal("return one");
-    expect(switchCase.assert("isa")).to.be.equal("return one");
-    expect(switchCase.assert("one")).to.be.equal("return one");
+    expect(switchCase.evaluate("1")).to.be.equal("return one");
+    expect(switchCase.evaluate("isa")).to.be.equal("return one");
+    expect(switchCase.evaluate("one")).to.be.equal("return one");
   });
 
   it("should allow passing of custom default switch case", async () => {
@@ -62,7 +62,7 @@ describe("suicchi", () => {
     switchCase.addCase("tanaka", () => "ohayou tanaka-san");
     switchCase.addCase("rye", () => "buang man siguro ka rye");
 
-    expect(switchCase.assert("rye")()).to.be.equal("buang man siguro ka rye");
-    expect(switchCase.assert("gwapo")("gwapo")).to.be.equal("hello gwapo");
+    expect(switchCase.evaluate("rye")()).to.be.equal("buang man siguro ka rye");
+    expect(switchCase.evaluate("gwapo")("gwapo")).to.be.equal("hello gwapo");
   });
 });

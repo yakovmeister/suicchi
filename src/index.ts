@@ -39,7 +39,7 @@ export class Suicchi {
    * @param key case's key or identifier
    * @return routine
    */
-  public assert(key: string): any {
+  public evaluate(key: string): any {
     if (!this.cases[key] && this.cases.default) {
       return this.cases.default;
     }

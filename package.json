@@ -1,6 +1,6 @@
 {
   "name": "suicchi",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Switch case on steroids",
   "main": "dist/index.js",
   "scripts": {
