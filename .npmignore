@@ -1,0 +1,15 @@
+/src
+/test
+/rollup.config.js
+/.travis.yml
+/tsconfig.json
+/.gitignore
+/.rpt2_cache
+/coverage
+/.nyc_output
+/.vscode
+/tslint.json
+/.eslintignore
+/.eslintrc
+/.mocharc
+/.nycrc
