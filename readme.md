@@ -1,5 +1,5 @@
 # suicchi  
-[![codecov](https://codecov.io/gh/yakovmeister/suicchi/branch/2.0/graph/badge.svg)](https://codecov.io/gh/yakovmeister/suicchi)
+[![codecov](https://codecov.io/gh/yakovmeister/suicchi/branch/master/graph/badge.svg)](https://codecov.io/gh/yakovmeister/suicchi)
 [![Greenkeeper badge](https://badges.greenkeeper.io/yakovmeister/suicchi.svg)](https://greenkeeper.io/)
 [![Build Status][travis-image]][travis-url]
 [![NPM Version][npm-image]][npm-url]
@@ -132,9 +132,9 @@ switch ("name") {
 5. Create a new Pull Request  
   
 <!-- Markdown link & img dfn's -->
-[npm-image]: https://img.shields.io/npm/v/yakovmeister/suicchi.svg?style=flat-square
-[npm-url]: https://www.npmjs.com/package/yakovmeister/suicchi
-[npm-downloads]: https://img.shields.io/npm/dm/yakovmeister/suicchi.svg?style=flat-square
-[travis-image]: https://travis-ci.org/yakovmeister/suicchi.svg?branch=2.0
+[npm-image]: https://img.shields.io/npm/v/suicchi.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/suicchi
+[npm-downloads]: https://img.shields.io/npm/dm/suicchi.svg?style=flat-square
+[travis-image]: https://travis-ci.org/yakovmeister/suicchi.svg?branch=master
 [travis-url]: https://travis-ci.org/yakovmeister/suicchi
 [paypal-image]: https://img.shields.io/badge/Donate-PayPal-green.svg
