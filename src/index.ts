@@ -14,9 +14,7 @@ export class Suicchi {
 
     this.cases.default = defaultCaseRoutine;
   }
-  private cases: GenericType = {
-    default: (): void => (null)
-  };
+  private cases: GenericType = {};
 
   private processKeyOrCasesAsString(key: string, routine?: any): void {
     this.cases[key] = routine;
