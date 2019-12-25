@@ -16,6 +16,11 @@ You can start by installing this library using the command below:
 ```
 npm i --save suicchi
 ```
+## Run Test  
+  
+```
+npm run coverage
+```
   
 # Basic Usage  
   
