@@ -266,6 +266,29 @@ x.getCases(); // => ['case1', 'case2', 'default']
 ```
 
 ## EvaluateCase (a.k.a Evaluate)
+
+The EvaluateCase (or Evaluate, as it's still supported atm) method lets you run a specific case by passing in the case as a parameter.
+
+if the provided parameter is does not match any of the cases, it will run the default routine.
+
+Also, the case parameter is case-sensitive.
+
+```javascript
+const x = new Suicchi({
+  default: "Awesome",
+  Rye: "Gay",
+  rye: "Gay",
+  rYe: "Gay",
+  ryE: "Gay"
+});
+
+x.EvaluateCase("Ray");   // => "Awesome"
+x.EvaluateCase("Jacob"); // => "Awesome"
+x.EvaluateCase("Rye");   // => "Gay"
+x.EvaluateCase("rye");   // => "Gay"
+x.EvaluateCase("rYe");   // => "Gay"
+x.EvaluateCase("ryE");   // => "Gay"
+```
   
 # Forking the repo
 1. Fork it https://github.com/yakovmeister/suicchi/fork  
