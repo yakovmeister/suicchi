@@ -1,11 +1,11 @@
 {
   "name": "suicchi",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Switch case on steroids",
   "main": "dist/index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha test/**/*.test.ts",
-    "coverage": "npm run lint && nyc npm test",
+    "coverage": "npm run lint && nyc --reporter=html npm test",
     "rollup": "rollup -c",
     "clean": "rimraf ./dist",
     "lint": "./node_modules/.bin/eslint . --ext .ts",

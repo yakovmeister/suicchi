@@ -1,3 +1,3 @@
 export type GenericType = {
-  [key: string]: any;
+  [key: string]: Function;
 }
