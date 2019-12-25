@@ -1,68 +1,280 @@
-import * as chai from "chai";
+import { expect, use } from "chai";
 import deepEq from "deep-equal-in-any-order";
 import { Suicchi } from "../src";
 
+const routine = () => ('aRoutine');
+
+const expectedKeyOrCasesError = "'keyOrCases' must be of type string, string[], or object";
+const expectedDefaultPropertyMustBeProvidedError = "'default' property must be provided";
+const expectedKeyOrCasesMustBeProvidedError = "'keyOrCases' must be provided";
+const expectedRoutineMustBeProvidedForStringOrStringArrayError = "'routine' must be provided for string or string[] keys";
+
 describe("suicchi", () => {
-  const { expect } = chai;
-
   before(() => {
-    chai.use(deepEq);
+    use(deepEq);
   });
 
-  it("should return correct value if assertion passed", async () => {
-    const switchCase = new Suicchi();
+  describe("constructor", () => {
+    describe('defaults', () => {
+      it("should initialize without any input with the default values", () => {
+        const switchCase = new Suicchi();
 
-    switchCase.addCase("one", "return one");
-    switchCase.addCase("two", "return two");
-    switchCase.addCase("three", "return three");
+        const expectedCases = ['default'];
+        const expectedDefaultValue = null;
 
-    expect(switchCase.evaluate("two")).to.be.equal("return two");
+        const returnedCases = switchCase.getCases()
+        const returnedDefaultValue = switchCase.evaluateCase('default');
+
+        expect(expectedCases).to.deep.equalInAnyOrder(returnedCases);
+        expect(expectedDefaultValue).to.equal(returnedDefaultValue);
+      });
+    });
+
+    describe("function type input parameter", () => {
+      it("should initialize a function for input", () => {
+        const switchCase = new Suicchi(() => ('default'));
+
+        const expectedCases = ['default'];
+        const expectedDefaultValue = 'default';
+
+        const returnedCases = switchCase.getCases()
+        const returnedDefaultValue = switchCase.evaluateCase('default');
+
+        expect(expectedCases).to.deep.equalInAnyOrder(returnedCases);
+        expect(expectedDefaultValue).to.equal(returnedDefaultValue);
+      });
+    });
+
+    describe("object type input parameter", () => {
+      it("should set the cases based on the object's properties", () => {
+        const switchCase = new Suicchi({
+          default: () => ('default'),
+          someProperty: () => ('someProperty')
+        });
+
+        const expectedCases = ['default', 'someProperty'];
+        const expectedDefaultValue = 'default';
+        const expectedSomePropertyValue = 'someProperty';
+
+        const returnedCases = switchCase.getCases()
+        const returnedDefaultValue = switchCase.evaluateCase('default');
+        const returnedSomePropertyValue = switchCase.evaluateCase('someProperty');
+
+        expect(expectedCases).to.deep.equalInAnyOrder(returnedCases);
+        expect(expectedDefaultValue).to.equal(returnedDefaultValue);
+        expect(expectedSomePropertyValue).to.equal(returnedSomePropertyValue);
+      })
+    });
+
+    describe('object type input parameter - ERRORS', () => {
+      it("should throw an error requiring a 'default' property in the object", () => {
+        try {
+          new Suicchi({} as any)
+        } catch(err) {
+          expect(err.message).to.equal(expectedDefaultPropertyMustBeProvidedError);
+        }
+      });
+    });
   });
 
-  it("should return list of the added switch case", async () => {
-    const switchCase = new Suicchi();
+  describe("addCase", () => {
+    describe('defaults - ERRORS', () => {
+      it("should throw an error if no keyOrCases is provided", () => {
+        try {
+          new Suicchi().addCase(null);
+        } catch(err) {
+          expect(err.message).to.equal(expectedKeyOrCasesMustBeProvidedError);
+        }
+      });
 
-    switchCase.addCase("one", "return one");
-    switchCase.addCase("two", "return two");
-    switchCase.addCase("three", "return three");
+      it("should throw an error if the keyOrCases is not of type string, string[], or object - integer", () => {
+        try {
+          new Suicchi().addCase(1234 as any);
+        } catch(err) {
+          expect(err.message).to.equal(expectedKeyOrCasesError);
+        }
+      });
 
-    expect(switchCase.getCases()).to.be.deep.equalInAnyOrder(["one", "two", "three", "default"]);
+      it("should throw an error if the keyOrCases is not of type string, string[], or object - boolean", () => {
+        try {
+          new Suicchi().addCase(false as any);
+        } catch(err) {
+          expect(err.message).to.equal(expectedKeyOrCasesError);
+        }
+      });
+    })
+
+    describe("string type input keyOrCases parameter", () => {
+      it("should add in the new case and routine", () => {
+        const switchCase = new Suicchi()
+        switchCase.addCase('newCase', routine);
+
+        const expectedCases = ['default', 'newCase']
+        const expectedNewCaseValue = 'aRoutine';
+
+        const returnedCases = switchCase.getCases();
+        const returnedNewCaseValue = switchCase.evaluateCase('newCase');
+
+        expect(expectedCases).to.deep.equalInAnyOrder(returnedCases);
+        expect(expectedNewCaseValue).to.equal(returnedNewCaseValue);
+      });
+    });
+
+    describe("string type input keyOrCases parameter - ERRORS", () => {
+      it("should throw an error if no routine is provided - if the keyOrCases type is string", () => {
+        try {
+          new Suicchi().addCase('someProperty');
+        } catch(err) {
+          expect(err.message).to.equal(expectedRoutineMustBeProvidedForStringOrStringArrayError);
+        }
+      });
+    });
+
+    describe("string[] type input keyOrCases parameter", () => {
+      it("should add in the new cases and routine", () => {
+        const switchCase = new Suicchi()
+        switchCase.addCase(['newCase1', 'newCase2'], routine);
+
+        const expectedCases = ['default', 'newCase1', 'newCase2'];
+        const expectedNewCase1Value = 'aRoutine';
+        const expectedNewCase2Value = 'aRoutine';
+
+        const returnedCases = switchCase.getCases();
+        const returnedNewCase1Value = switchCase.evaluateCase('newCase1');
+        const returnedNewCase2Value = switchCase.evaluateCase('newCase2');
+
+        expect(expectedCases).to.deep.equalInAnyOrder(returnedCases);
+        expect(expectedNewCase1Value).to.equal(returnedNewCase1Value);
+        expect(expectedNewCase2Value).to.equal(returnedNewCase2Value);
+      });
+    });
+
+    describe("string[] type input keyOrCases parameter - ERRORS", () => {
+      it("should throw an error if no routine is provided - if the keyOrCases type is string[]", () => {
+        try {
+          new Suicchi().addCase(['someProperty']);
+        } catch(err) {
+          expect(err.message).to.equal(expectedRoutineMustBeProvidedForStringOrStringArrayError);
+        }
+      });
+    });
+
+    describe('object type input keyOrCases parameter', () => {
+      it("should add in the new cases and routines", () => {
+        const switchCase = new Suicchi()
+        switchCase.addCase({
+          newCase1: routine,
+          newCase2: () => ('aRoutine2')
+        });
+
+        const expectedCases = ['default', 'newCase1', 'newCase2'];
+        const expectedNewCase1Value = 'aRoutine';
+        const expectedNewCase2Value = 'aRoutine2';
+
+        const returnedCases = switchCase.getCases();
+        const returnedNewCase1Value = switchCase.evaluateCase('newCase1');
+        const returnedNewCase2Value = switchCase.evaluateCase('newCase2');
+
+        expect(expectedCases).to.deep.equalInAnyOrder(returnedCases);
+        expect(expectedNewCase1Value).to.equal(returnedNewCase1Value);
+        expect(expectedNewCase2Value).to.equal(returnedNewCase2Value);
+      });
+    });
   });
 
-  it("should return nothing if assertion mismatched (default)", async () => {
-    const switchCase = new Suicchi();
+  describe("getCases", () => {
+    describe('defaults', () => {
+      it("should return the 'default' property if Suicchi initialized without defaultCaseRoutine", () => {
+        const switchCase = new Suicchi();
 
-    switchCase.addCase("one", "return one");
-    switchCase.addCase("two", "return two");
-    switchCase.addCase("three", "return three");
+        const expectedCases = ['default'];
+        const returnedCases = switchCase.getCases()
 
-    expect(switchCase.evaluate("five")()).to.be.equal(undefined);
+        expect(expectedCases).to.deep.equalInAnyOrder(returnedCases);
+      });
+      
+      it("should return the 'default' property if Suicchi initialized with defaultCaseRoutine - function", () => {
+        const switchCase = new Suicchi(() => null);
+
+        const expectedCases = ['default'];
+        const returnedCases = switchCase.getCases()
+
+        expect(expectedCases).to.deep.equalInAnyOrder(returnedCases);
+      });
+      
+      it("should return the 'default' property if Suicchi initialized with defaultCaseRoutine - object", () => {
+        const switchCase = new Suicchi({ default: () => null });
+
+        const expectedCases = ['default'];
+        const returnedCases = switchCase.getCases()
+
+        expect(expectedCases).to.deep.equalInAnyOrder(returnedCases);
+      });
+    });
+
+    
   });
 
-  it("should allow cases to have different keys", async () => {
-    const switchCase = new Suicchi();
+  describe("evaluateCase", () => {
+    describe('defaults', () => {
+      it("should run the default case if the provided key is not a propery of the cases - function", () => {
+        const switchCase = new Suicchi(() => ('default'))
 
-    switchCase.addCase(["one", "1", "isa"], "return one");
-    switchCase.addCase("two", "return two");
-    switchCase.addCase("three", "return three");
+        const expectedPropertyValue = 'default';
+        const returnedPropertyValue = switchCase.evaluateCase('randomCase');
 
-    expect(switchCase.evaluate("1")).to.be.equal("return one");
-    expect(switchCase.evaluate("isa")).to.be.equal("return one");
-    expect(switchCase.evaluate("one")).to.be.equal("return one");
-  });
+        expect(expectedPropertyValue).to.equal(returnedPropertyValue);
+      });
 
-  it("should allow passing of custom default switch case", async () => {
-    function defaultSwitchCase(name: string) {
-      return "hello " + name;
-    }
+      it("should return the default case if the provided key is not a propery of the cases - boolean", () => {
+        const switchCase = new Suicchi(true)
 
-    const switchCase = new Suicchi(defaultSwitchCase);
+        const expectedPropertyValue = true;
+        const returnedPropertyValue = switchCase.evaluateCase('randomCase');
 
-    switchCase.addCase("juan", () => "buenos dias juan");
-    switchCase.addCase("tanaka", () => "ohayou tanaka-san");
-    switchCase.addCase("rye", () => "buang man siguro ka rye");
+        expect(expectedPropertyValue).to.equal(returnedPropertyValue);
+      });
 
-    expect(switchCase.evaluate("rye")()).to.be.equal("buang man siguro ka rye");
-    expect(switchCase.evaluate("gwapo")("gwapo")).to.be.equal("hello gwapo");
+      it("should return the default case if the provided key is not a propery of the cases - integer", () => {
+        const switchCase = new Suicchi(1234)
+
+        const expectedPropertyValue = 1234;
+        const returnedPropertyValue = switchCase.evaluateCase('randomCase');
+
+        expect(expectedPropertyValue).to.equal(returnedPropertyValue);
+      });
+
+      it("should return the default case if the provided key is not a propery of the cases - string", () => {
+        const switchCase = new Suicchi('default')
+
+        const expectedPropertyValue = 'default';
+        const returnedPropertyValue = switchCase.evaluateCase('randomCase');
+
+        expect(expectedPropertyValue).to.equal(returnedPropertyValue);
+      });
+
+      it("should return the default case if the provided key is not a propery of the cases - object", () => {
+        const switchCase = new Suicchi({ default: 'default' })
+
+        const expectedPropertyValue = 'default';
+        const returnedPropertyValue = switchCase.evaluateCase('randomCase');
+
+        expect(expectedPropertyValue).to.equal(returnedPropertyValue);
+      });
+    });
+
+    describe('existing input', () => {
+      it("should run the routine of the specific case", () => {
+        const switchCase = new Suicchi({
+          default: () => ('default'),
+          notDefault: () => ('!default')
+        })
+
+        const expectedPropertyValue = '!default';
+        const returnedPropertyValue = switchCase.evaluateCase('notDefault');
+
+        expect(expectedPropertyValue).to.equal(returnedPropertyValue);
+      });
+    });
   });
 });
