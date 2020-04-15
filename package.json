@@ -20,7 +20,7 @@
   "author": "yakovmeister <so@tfwno.gf>",
   "license": "MIT",
   "devDependencies": {
-    "@types/aws-lambda": "8.10.39",
+    "@types/aws-lambda": "8.10.50",
     "@types/chai": "4.2.7",
     "@types/chai-as-promised": "7.1.2",
     "@types/deep-equal-in-any-order": "^1.0.1",
